@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <meta
+        name="description"
+        content="{% block meta_description %}SocialDabe — aprenda tecnologia, compartilhe conhecimento e conecte-se com outras pessoas.{% endblock %}"
+    >
+
+    <meta name="theme-color" content="#080b0f">
+
+    <title>
+        {% block title %}SocialDabe{% endblock %}
+    </title>
+
+    {# Substitua pelo favicon real quando estiver disponível. #}
+    {# <link rel="icon" href="{% static 'img/favicon.ico' %}"> #}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+    <!-- Acessibilidade: permite ir diretamente ao conteúdo -->
+    <a class="skip-link" href="#main-content">
+        Pular para o conteúdo
+    </a>
+
+    {% block header %}
+        <header class="site-header">
+
+            <div class="header-container">
+
+                <!-- Marca -->
+                <a
+                    href=""
+                    class="brand"
+                    aria-label="SocialDabe - Página inicial"
+                >
+                    {# Substitua por uma imagem quando a logo estiver disponível. #}
+
+                    <span class="brand-symbol" aria-hidden="true">
+                        &lt;/&gt;
+                    </span>
+
+                    <span class="brand-name">
+                        Social<span>Dabe</span>
+                    </span>
+                </a>
+
+
+                <!-- Botão do menu mobile -->
+                <button
+                    class="menu-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="main-navigation"
+                    aria-label="Abrir menu de navegação"
+                >
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </button>
+
+
+                <!-- Navegação principal -->
+                <nav
+                    id="main-navigation"
+                    class="main-navigation"
+                    aria-label="Navegação principal"
+                >
+                    <ul class="nav-list">
+
+                        <li>
+                            <a href="">
+                                Início
+                            </a>
+                        </li>
+
+                        {#
+                            Adicione aqui URLs que realmente existirem.
+
+                            Exemplos futuros:
+
+                            <li>
+                                <a href="">Feed</a>
+                            </li>
+
+                            <li>
+                                <a href="">Aprender</a>
+                            </li>
+                        #}
+
+                        {% if user.is_authenticated %}
+
+                            {#
+                                Adicione a rota de perfil quando ela existir.
+
+                                Exemplo:
+
+                                <li>
+                                    <a href="">
+                                        Meu perfil
+                                    </a>
+                                </li>
+                            #}
+
+                            <li class="nav-user">
+                                <span>
+                                    Olá,
+                                    <strong>
+                                        {{ user.first_name|default:user.username }}
+                                    </strong>
+                                </span>
+                            </li>
+
+                            <li>
+                                <form
+                                    method="post"
+                                    action=""
+                                    class="logout-form"
+                                >
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="nav-button nav-button-secondary"
+                                    >
+                                        Sair
+                                    </button>
+                                </form>
+                            </li>
+
+                        {% else %}
+
+                            <li>
+                                <a
+                                    href=""
+                                    class="nav-button nav-button-secondary"
+                                >
+                                    Entrar
+                                </a>
+                            </li>
+
+                            {#
+                                Adicione a URL de cadastro quando ela existir.
+
+                                Exemplo:
+
+                                <li>
+                                    <a
+                                        href=""
+                                        class="nav-button nav-button-primary"
+                                    >
+                                        Criar conta
+                                    </a>
+                                </li>
+                            #}
+
+                        {% endif %}
+
+                    </ul>
+                </nav>
+
+            </div>
+
+        </header>
+    {% endblock %}
+
+
+    <!-- Mensagens do Django -->
+    {% if messages %}
+        <section
+            class="messages-container"
+            aria-label="Notificações"
+        >
+            {% for message in messages %}
+
+                <div
+                    class="message
+                    {% if message.tags == 'success' %}
+                        message-success
+                    {% elif message.tags == 'info' %}
+                        message-info
+                    {% elif message.tags == 'warning' %}
+                        message-warning
+                    {% elif message.tags == 'error' %}
+                        message-error
+                    {% endif %}"
+                    role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}"
+                >
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+        </section>
+    {% endif %}
+
+
+    <!-- Conteúdo principal -->
+    <main
+        id="main-content"
+        class="main-content"
+        tabindex="-1"
+    >
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    {% block footer %}
+        <footer class="site-footer">
+
+            <div class="footer-container">
+
+                <div class="footer-brand">
+
+                    <a
+                        href=""
+                        class="brand footer-logo"
+                    >
+                        <span
+                            class="brand-symbol"
+                            aria-hidden="true"
+                        >
+                            &lt;/&gt;
+                        </span>
+
+                        <span class="brand-name">
+                            Social<span>Dabe</span>
+                        </span>
+                    </a>
+
+                    <p>
+                        Tecnologia para aprender,
+                        criar e compartilhar.
+                    </p>
+
+                </div>
+
+
+                <nav
+                    class="footer-navigation"
+                    aria-label="Navegação do rodapé"
+                >
+                    <a href="">
+                        Início
+                    </a>
+
+                    {#
+                        Adicione links institucionais somente
+                        quando as respectivas URLs existirem.
+
+                        Exemplos:
+                        termos
+                        privacidade
+                        contato
+                    #}
+                </nav>
+
+
+                <div class="footer-bottom">
+
+                    <p>
+                        &copy; {% now "Y" %} SocialDabe.
+                        Todos os direitos reservados.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </footer>
+    {% endblock %}
+
+
+    <script
+        src="{% static 'js/base.js' %}"
+        defer
+    ></script>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>
