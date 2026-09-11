@@ -12,6 +12,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT = "/"
+LOGOUT_REDIRECT_UTL = "accounts/login"
+
+
 
 # Application definition
 
