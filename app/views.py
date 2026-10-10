@@ -1,12 +1,22 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
+from .models import Post
 
 
 
 @login_required
 def inicio(request):
-    return render(request,"index.html")
+
+    posts = Post.objects.all().order_by("criado_em")
+
+    dados = {
+
+        "posts" : posts
+
+    }
+
+
+    return render(request,"index.html",dados)
 
 
 @login_required

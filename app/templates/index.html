@@ -1,2 +1,355 @@
-{% extends 'base.html' %}
 
+{% extends "base.html" %}
+
+{% block title %}Início | SocialDabe{% endblock %}
+
+{% block meta_description %}
+Confira as publicações da comunidade SocialDabe.
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* CONTAINER PRINCIPAL */
+
+    .feed-container {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 20px 0 50px;
+    }
+
+    /* CABEÇALHO DO FEED */
+
+    .feed-header {
+        margin-bottom: 30px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #26303b;
+    }
+
+    .feed-label {
+        display: inline-block;
+        color: #22c55e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+    }
+
+    .feed-header h1 {
+        color: #f3f6f8;
+        font-size: clamp(26px, 5vw, 36px);
+        margin: 0 0 10px;
+    }
+
+    .feed-header p {
+        color: #9ca8b5;
+        margin: 0;
+    }
+
+    /* LISTA DE PUBLICAÇÕES */
+
+    .feed-posts {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+    }
+
+    /* CARD DO POST */
+
+    .post-card {
+        background: #10151c;
+        border: 1px solid #26303b;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: border-color 0.2s ease;
+    }
+
+    .post-card:hover {
+        border-color: #36566a;
+    }
+
+    /* INFORMAÇÕES DO AUTOR */
+
+    .post-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px;
+    }
+
+    .post-avatar {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: linear-gradient(135deg, #16a34a, #2563eb);
+        color: white;
+
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 50%;
+    }
+
+    .post-author-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .post-author {
+        color: #f3f6f8;
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .post-username {
+        color: #22c55e;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .post-author-info time {
+        color: #8d9aa8;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    /* LEGENDA DA PUBLICAÇÃO */
+
+    .post-content {
+        padding: 0 20px 20px;
+    }
+
+    .post-content p {
+        margin: 0;
+        color: #dce5ec;
+        font-size: 15px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    /* IMAGEM DA PUBLICAÇÃO */
+
+    .post-media {
+        width: 100%;
+        background: #080b0f;
+    }
+
+    .post-media img {
+        display: block;
+        width: 100%;
+        max-height: 550px;
+        object-fit: contain;
+    }
+
+    /* RODAPÉ */
+
+    .post-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-top: 1px solid #26303b;
+    }
+
+    .post-date {
+        color: #8d9aa8;
+        font-size: 12px;
+    }
+
+    /* FEED VAZIO */
+
+    .empty-feed {
+        padding: 65px 25px;
+        text-align: center;
+        background: #10151c;
+        border: 1px dashed #36566a;
+        border-radius: 16px;
+    }
+
+    .empty-icon {
+        font-family: monospace;
+        color: #22c55e;
+        font-size: 38px;
+        margin-bottom: 20px;
+    }
+
+    .empty-feed h2 {
+        color: #f3f6f8;
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .empty-feed p {
+        color: #9ca8b5;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* RESPONSIVIDADE */
+
+    @media (max-width: 600px) {
+
+        .feed-container {
+            padding-top: 10px;
+        }
+
+        .feed-header {
+            margin-bottom: 20px;
+        }
+
+        .post-header {
+            padding: 15px;
+        }
+
+        .post-content {
+            padding: 0 15px 15px;
+        }
+
+        .post-footer {
+            padding: 14px 15px;
+        }
+
+        .post-avatar {
+            width: 42px;
+            height: 42px;
+            font-size: 17px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .post-card {
+            transition: none;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="feed-container">
+
+    <!-- CABEÇALHO DO FEED -->
+
+    <section class="feed-header">
+
+        <span class="feed-label">
+            COMUNIDADE SOCIALDABE
+        </span>
+
+        <h1>Explorar publicações</h1>
+
+        <p>
+            Descubra o que a comunidade está compartilhando.
+        </p>
+
+    </section>
+
+
+    <!-- PUBLICAÇÕES -->
+
+    <section class="feed-posts" aria-label="Publicações recentes">
+
+        {% for post in posts %}
+
+        <article class="post-card">
+
+            <!-- AUTOR -->
+
+            <header class="post-header">
+
+                <div class="post-avatar" aria-hidden="true">
+                    {{ post.autor.username|first|upper }}
+                </div>
+
+                <div class="post-author-info">
+
+                    <strong class="post-author">
+                        {{ post.autor.get_full_name|default:post.autor.username }}
+                    </strong>
+
+                    <span class="post-username">
+                        @{{ post.autor.username }}
+                    </span>
+
+                    <time datetime="{{ post.criado_em|date:'c' }}">
+                        {{ post.criado_em|date:"d/m/Y" }}
+                        às
+                        {{ post.criado_em|date:"H:i" }}
+                    </time>
+
+                </div>
+
+            </header>
+
+
+            <!-- LEGENDA -->
+
+            {% if post.legenda %}
+
+            <div class="post-content">
+                <p>{{ post.legenda|linebreaksbr }}</p>
+            </div>
+
+            {% endif %}
+
+
+            <!-- IMAGEM -->
+
+            {% if post.imagem %}
+
+            <div class="post-media">
+
+                <img
+                    src="{{ post.imagem.url }}"
+                    alt="Imagem publicada por {{ post.autor.username }}"
+                    loading="lazy"
+                >
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- RODAPÉ -->
+
+            <footer class="post-footer">
+
+                <span class="post-date">
+                    Publicado {{ post.criado_em|timesince }} atrás
+                </span>
+
+            </footer>
+
+        </article>
+
+        {% empty %}
+
+        <!-- NENHUMA PUBLICAÇÃO -->
+
+        <div class="empty-feed">
+
+            <div class="empty-icon" aria-hidden="true">
+                &lt;/&gt;
+            </div>
+
+            <h2>Nenhuma publicação ainda</h2>
+
+            <p>
+                As publicações da comunidade aparecerão aqui
+                assim que forem criadas.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}
